@@ -1,7 +1,7 @@
 ---
 name: consultant
 description: Quality review of one implementation phase diff. Structured CONSULT report. Does not edit product code, does not talk to the user, does not judge spec compliance.
-model: claude-haiku-5-5
+model: haiku
 tools: Read, Glob, Grep, Bash
 ---
 

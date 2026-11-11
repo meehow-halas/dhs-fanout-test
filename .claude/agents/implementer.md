@@ -1,7 +1,7 @@
 ---
 name: implementer
 description: Implements the spec (feature or bug). Own 2–6 phase plan. After each phase, launches Consultant. Calls start-task (worktree). Does not edit CHANGELOG.md.
-model: claude-haiku-5-5
+model: sonnet
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 

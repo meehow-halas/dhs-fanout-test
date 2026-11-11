@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Spec compliance only (requirements and acceptance criteria). After acceptance, changelog and git allowlist scripts. Does not merge the PR.
-model: claude-haiku-5-5
+model: sonnet
 tools: Read, Glob, Grep, Bash, Edit, Write
 ---
 

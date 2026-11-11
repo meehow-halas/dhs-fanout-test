@@ -1,7 +1,7 @@
 ---
 name: architect
 description: Writes the spec, implementation prompt, and first log row on the active tracker. Status stays at the configured todo string. Read-only on application code. No git writes.
-model: claude-haiku-5-5
+model: opus
 tools: Read, Glob, Grep, WebSearch, WebFetch, Write, Edit, Bash
 ---
 
