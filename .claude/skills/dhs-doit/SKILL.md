@@ -53,7 +53,7 @@ Reply in the conversation language.
 
 ## Several keys
 
-If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `doit`, one child session per key. The parent runs `.dhs/scripts/start-task` per key before spawning; do not launch Implementer here. Two or more keys and `sessionSpawn` is `manual`: print the `start-task` and `/dhs-doit <KEY>` commands per key and stop. One key: continue below.
+If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `doit`, one child session per key. The parent runs `.dhs/scripts/start-task` per key before spawning, then the **Prompt check** in that file before each spawn (only the allowed lines; no shared folder, notes file, or extra instruction). Do not launch Implementer here. Two or more keys and `sessionSpawn` is `manual`: print the `start-task` and `/dhs-doit <KEY>` commands per key and stop. One key: continue below.
 
 ## Resolve the tasks
 
@@ -88,7 +88,7 @@ Follow the live Implementer file for this host (`<agentsDir>/implementer.md` fro
 
 For each task that passed resolve:
 
-1. Run `.dhs/scripts/start-task <task>` from the launch checkout. Copy its `worktree:` path. Do not compose `git`.
+1. Run `.dhs/scripts/start-task <task>` from the launch checkout. Copy its `worktree:` path. Do not compose `git`. Then check the spec in that worktree: its `status:` must be the configured `in progress` string after the Implementer's start step. If the spec is still `todo` when the Implementer reports done, stop that task with `BLOCKED: status not in progress — the start step did not run for <task>`.
 2. Apply the Implementer procedure in this session with at least:
    - `Mode: <mode>`
    - Task key (basename or issue key)

@@ -53,7 +53,7 @@ Reply in the language of the user’s messages in this session, every message, i
 
 ## Several keys
 
-If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `planit`, one child session per key. Do not launch Architect here. Two or more keys and `sessionSpawn` is `manual`: print one `/dhs-planit <KEY>` command per key and stop. One key: continue below.
+If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `planit`, one child session per key. Before each spawn, run the **Prompt check** in that file: the child prompt has only the allowed lines; no shared folder, notes file, or extra instruction. Do not launch Architect here. Two or more keys and `sessionSpawn` is `manual`: print one `/dhs-planit <KEY>` command per key and stop. One key: continue below.
 
 ## Resolve the request
 

@@ -147,6 +147,8 @@ When Reviewer returns ❌ items: implement only those items. Launch Consultant a
 
 1. Read spec and prompt on the active tracker. Check `depends`: every listed task must be at the configured `done` status; otherwise stop. `relates` is context. If the prompt names a dependency not in `depends`, say so in the report (you cannot edit those lists).
 2. Run `.dhs/scripts/start-task <task>` (from the launch checkout or the named worktree). Then set status to the configured `in progress` string (files) or Jira mapped `inProgress` when not `null`. Append a start row to the log (files) or a comment (Jira). Do remaining work only under the `worktree:` path.
+
+**Step 2 is mandatory and checked.** Before any code is written, re-read the spec file's `status:` line and the log. The status must be the configured `in progress` string, and the log must contain the start row. If either is missing, fix it now (set status, append the row) and only then continue. Never start implementation with the spec at `todo`. A run that finishes with status `todo` is a failed run: say so in the report with `BLOCKED: status not in progress`.
 3. Plan 2–6 phases. Implement one phase, run the project’s checks for the code you touched, then launch Consultant. Repeat until every phase has `continue` (or debt protocol / launch cap says to finish).
 4. When all phases have `continue`, leave status `in progress`. Do not move it to `code review`. Append a log row summarizing the branch, a short change summary, and files created/changed/deleted in the code (repo-relative; not this task’s spec/prompt/log). A later fix round appends a new row; never edit earlier rows.
 

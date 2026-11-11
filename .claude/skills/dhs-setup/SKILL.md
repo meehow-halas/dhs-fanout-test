@@ -82,7 +82,9 @@ Read the tree (README, manifests, existing docs, default-branch clues, `AGENTS.m
 Look for an existing product requirements document (typical `docs/prd.md`, or a path the repo already treats as the PRD).
 
 - If one exists: **use it. Do not rewrite it.** Put that path in `agents.docs`.
-- If none exists: gather product facts from the repo. Ask one question at a time only for facts the repo does not contain. Then write `docs/prd.md`. Put that path in `agents.docs`.
+- If none exists: gather product facts from the repo. Ask one question at a time for each fact the repo does not contain. Ask at least: purpose, users, scope, and **non-goals** (what must not be built). Do not invent any of these from the repo's current contents. Then write `docs/prd.md`. Put that path in `agents.docs`.
+- A section the user did not answer is written as `TBD — not stated by the user`, not as a rule. Do not write non-goals the user did not state. An empty non-goals list is written as `None stated`.
+- Agents treat `TBD` lines as no constraint and must not report a conflict with them. A conflict is reported only against a stated non-goal or scope line.
 
 Config stores a one-line `product` plus doc paths, **not** the PRD body.
 

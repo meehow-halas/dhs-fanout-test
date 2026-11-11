@@ -89,6 +89,10 @@ If spec or prompt is missing for a named task, stop **that** task and continue t
 BLOCKED: spec and prompt are missing — run /dhs-planit or /dhs-shipit
 ```
 
+## Status gate (before Reviewer)
+
+Read `status:` in the task's spec (worktree copy when a worktree exists, else the tracker). For `review`, the status must be the configured `in progress` or `code review` string. For `update`, it must be `in progress`, `code review`, or `in review` (the PR may already be open). For `close`, it must be `in review`. Any other value stops that task: `BLOCKED: status <value> does not allow <variant> — set the status the Implementer should have left, or run /dhs-doit <task>`. Do not launch Reviewer on a task that fails this gate.
+
 ## Launch Reviewer
 
 This skill is the parent. Follow the live Reviewer file for this host (`<agentsDir>/reviewer.md` from `.dhs/references/hosts.json` — a copy from `/dhs-setup`, not a symlink to `.dhs/agents/`). Do not duplicate that procedure here.

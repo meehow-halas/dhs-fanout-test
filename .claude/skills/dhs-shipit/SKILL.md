@@ -107,7 +107,7 @@ No implementation means status is still the configured `todo` string (Architect 
 
 Follow the live Implementer file for this host (`<agentsDir>/implementer.md`) inline in this session, not as a subagent. Launch Consultant from this session after each phase (Agent tool); do not launch Consultant as a skill.
 
-Run `.dhs/scripts/start-task <task>` from the launch checkout. Pass the same `Mode:`, the task key, and `Worktree: <abs>` from the script. Implementer may call `start-task` again (idempotent).
+Run `.dhs/scripts/start-task <task>` from the launch checkout. Pass the same `Mode:`, the task key, and `Worktree: <abs>` from the script. Implementer may call `start-task` again (idempotent). When Implementer reports done, check the spec in the worktree: `status:` must be `in progress`. If it is still `todo`, stop with `BLOCKED: status not in progress — the start step did not run for <task>`.
 
 If Implementer stops on `BLOCKED:` or `Q<n>`, stop the pipeline and report.
 
