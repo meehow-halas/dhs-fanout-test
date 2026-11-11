@@ -15,5 +15,4 @@ Developers of dhs who use this repo to test the harness.
 
 ## Non-goals
 
-- No product features.
-- No application code.
+None stated.
