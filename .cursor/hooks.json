@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "command": ".dhs/scripts/check-update --host cursor",
+        "timeout": 5
+      }
+    ]
+  }
+}

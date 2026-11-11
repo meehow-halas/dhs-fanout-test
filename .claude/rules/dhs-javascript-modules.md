@@ -1,0 +1,15 @@
+---
+paths:
+  - "**/*.js"
+  - "**/*.jsx"
+  - "**/*.mjs"
+  - "**/*.cjs"
+---
+
+# JavaScript
+
+- Stay in JavaScript. Do not add TypeScript syntax to a `.js` file.
+- Follow the module system the project already uses. Do not mix `require` into an ESM file, or `import` into a CommonJS file, unless that file already does.
+- Use `const` or `let`. Do not add a new `var`.
+- Compare with `===`.
+- Document a public function with JSDoc when the surrounding code documents functions that way.

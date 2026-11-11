@@ -1,0 +1,55 @@
+{
+  "dhs": {
+    "generatedFrom": "1.0.2"
+  },
+  "product": "Test fixture for dhs (dev-harness-layer) fan-out; no real product",
+  "packsIgnored": [],
+  "jiraOffer": "declined",
+  "agents": {
+    "docs": [
+      "docs/prd.md"
+    ],
+    "baseBranch": "dev",
+    "contentLanguage": "English",
+    "statuses": {
+      "todo": "todo",
+      "in progress": "in progress",
+      "code review": "code review",
+      "in review": "in review",
+      "done": "done"
+    },
+    "roles": {
+      "architect": {
+        "model": {
+          "claude-code": "claude-haiku-5-5",
+          "cursor": "composer-2.5",
+          "opencode": "anthropic/claude-haiku-4-5"
+        }
+      },
+      "implementer": {
+        "model": {
+          "claude-code": "claude-haiku-5-5",
+          "cursor": "composer-2.5",
+          "opencode": "anthropic/claude-haiku-4-5"
+        }
+      },
+      "consultant": {
+        "model": {
+          "claude-code": "claude-haiku-5-5",
+          "cursor": "composer-2.5",
+          "opencode": "anthropic/claude-haiku-4-5"
+        }
+      },
+      "reviewer": {
+        "model": {
+          "claude-code": "claude-haiku-5-5",
+          "cursor": "composer-2.5",
+          "opencode": "anthropic/claude-haiku-4-5"
+        }
+      }
+    },
+    "brainstorm": {
+      "consult": "significant"
+    }
+  }
+}
