@@ -40,6 +40,15 @@ Every question carries a stable id `Q<n>` and one recommended answer: `Q<n>: <qu
 - `interactive`: confirm the title, then spec+prompt, before write. User confirmation may arrive in this session or from the launching skill as a recorded decision for this task. Record it once in the log. Do not wait for a second channel.
 - `critical` / `autonomous`: write once Questions is satisfied. Do not wait for a separate approval.
 
+### Existing spec (what wins)
+
+The spec file on the tracker is the contract. The log is history and never a contract. A spec may be only a few loose sentences; the Architect completes it.
+
+- `autonomous`: overwrite the spec file with the complete new spec. Do not leave the better version only in the log, because the Implementer works from the spec file. Before overwriting, record in the log: the original text verbatim (so the user can restore it), the list of changes, and the reason for each. Do not add facts the user did not give (for example invented usage claims); put any open choice in the log as `Q<n>` with a recommendation and follow it.
+- `interactive`: do not overwrite. Write the proposed spec as a block in the log (`Proposed spec`), ask the user once, and overwrite only after the user approves. Until then the spec file stays as it was.
+- `critical`: same as `interactive` for changes to existing text. Additions that change no existing sentence may be written directly.
+- Additions that change no existing sentence (missing sections, `status`, `depends`, acceptance criteria) may be written in every mode.
+
 ## Stops
 
 Not questions and not Consultant `must-fix`. One line:
@@ -125,7 +134,7 @@ Read `harness.config.json`, project `AGENTS.md` / `CLAUDE.md`, and `agents.docs`
 
 ### 2. Task source
 
-**Existing task** (files or Jira): read spec, prompt, and log. Analyze what is present and what is missing. Update when Writing the specification allows it.
+**Existing task** (files or Jira): read spec, prompt, and log. Analyze what is present and what is missing. Update under **Existing spec (what wins)** above.
 
 **New task:** propose title and type (`feature` or `bug`). When Writing the specification allows it, choose the key (basename or create the Jira issue) and write spec + prompt + first log row.
 
