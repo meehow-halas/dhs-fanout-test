@@ -77,7 +77,7 @@ If the prompt has the line `Fan-out child: yes`, this session is a child: run th
 
 ## Resolve the tasks
 
-Need an existing spec + prompt on the **active tracker** (repo files when Jira has `artifactsOnTrackerOnly: false`). User named one or more basenames or issue keys → those tasks. Otherwise the task they clearly mean. If several match and they did not list them, one question in `interactive`; otherwise:
+Need an existing spec + prompt on the **active tracker** (repo files when Jira has `artifactsOnTrackerOnly: false`). **Files tracker with a worktree:** when `.git/dhs-worktrees/<task>` exists (its path is `$(git rev-parse --git-common-dir)/dhs-worktrees/<task>`), `start-task` has moved the uncommitted spec, prompt, and log out of the launch checkout into that worktree. Read them there. An empty `docs/prompt/` in the launch checkout is not "missing" in that case; check the worktree first, and treat the launch checkout only when no worktree exists. User named one or more basenames or issue keys → those tasks. Otherwise the task they clearly mean. If several match and they did not list them, one question in `interactive`; otherwise:
 
 ```text
 BLOCKED: task is ambiguous — name the feature basename or Jira key

@@ -57,7 +57,7 @@ If the prompt has the line `Fan-out child: yes`, this session is a child: run th
 
 ## Resolve the tasks
 
-Need an existing spec **and** prompt on the **active tracker** (files if `agents.tracker` is absent; Jira if present — bodies on issue or in repo per `agents.tracker.artifactsOnTrackerOnly`). Never mirror.
+Need an existing spec **and** prompt on the **active tracker** (files if `agents.tracker` is absent; Jira if present — bodies on issue or in repo per `agents.tracker.artifactsOnTrackerOnly`). Never mirror. **Files tracker with a worktree:** when `.git/dhs-worktrees/<task>` exists, `start-task` has moved the uncommitted spec, prompt, and log into that worktree. Read them there, not from the launch checkout (an empty `docs/prompt/` there is expected in that case).
 
 - User named one or more basenames or issue keys → those tasks, in that order.
 - Otherwise pick the task they clearly mean. If several match and they did not list them, one question in `interactive`; otherwise:
