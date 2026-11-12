@@ -14,7 +14,7 @@
     "statuses": {
       "todo": "todo",
       "in progress": "in progress",
-      "code review": "code review",
+      "implemented": "implemented",
       "in review": "in review",
       "done": "done"
     },

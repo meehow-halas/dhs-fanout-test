@@ -96,7 +96,7 @@ Do not write `harness.config.json` or generate live files until these are confir
 
 **`agents.contentLanguage`.** Language of files and tracker text. Ask once. Suggest the conversation language.
 
-**`agents.baseBranch`.** The git branch `.dhs/scripts/` cut task branches from, open PRs against, merge into a task branch on **update**, and return to after PR or **close**. Ask once. Suggested default is `dev`. If the repo already names a default branch, state that inference so the user can object. Without this key, the scripts have no base and must not guess one. Do not write this value into generated agent markdown.
+**`agents.baseBranch`.** The git branch `.dhs/scripts/` cut task branches from, open PRs against, merge into a task branch on **update**, and return to after the PR is opened. Ask once. Suggested default is `dev`. If the repo already names a default branch, state that inference so the user can object. Without this key, the scripts have no base and must not guess one. Do not write this value into generated agent markdown.
 
 **Project rule (optional).** One question, after models, content language, and base branch. Say what it is: a standing instruction for the agents on this project, beyond the generated framework packs — for example “never edit the legacy billing module”, “PRs always target `develop`”, “tests only through pytest”. Store it on the roles (`rules`; reviewer `checklist` when it is a review constraint). **Skip is the default:** empty is fine. Do not ask for a list or a second rule. If the user already stated such a rule earlier in this conversation, record it and do not ask again.
 
@@ -160,6 +160,8 @@ BLOCKED: dhs install has not been run here — run dhs install (npx -p dev-harne
 If any role `model` is still a string, or a map is missing a `hosts.json` `id`, finish **Role model maps** first. Do not regenerate live agents until every role has a complete map.
 
 If `.dhs/VERSION` (trimmed) does not equal `dhs.generatedFrom`: regenerate live agents, work skills, and rule packs from `.dhs/` (same copy rules as first run), set `dhs.generatedFrom` to `.dhs/VERSION`, and tell the user the installed package templates changed. That message must name the work-skill rename: `/dhs-feature` was renamed to `/dhs-shipit`; leftover live `dhs-feature` was removed from every `skillsDir`. Do not rewrite `AGENTS.md` or `CLAUDE.md`; mention they may still contain the old name. Then continue below.
+
+**Status migration (once, on a later run).** If `agents.statuses` has the key `code review` and no `implemented` key, the flow changed. Rename it to `implemented` (key and value) in config and tell the user. Do not edit spec files. List every spec under `docs/features/` (or the mapped tracker) whose `status:` is `code review`, and tell the user to set it to `implemented`, or to `in review` if a review is running. `in review` stays valid.
 
 Then **one change at a time**. Show current and new value, wait for confirmation, then write. Do not overwrite keys the user did not confirm.
 

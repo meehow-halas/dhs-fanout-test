@@ -51,7 +51,7 @@ BLOCKED: live agents are missing — run /dhs-setup
 
 From **intent**. A launch may name `interactive`, `critical`, or `autonomous`. If the user asked for the work to be done alone (`samodzielnie`, `sam`, `bez pytań`, `autonomicznie`, `autonomous`), use `autonomous`; never fall back to `interactive` then. Otherwise default `interactive`. Pass that mode to the Reviewer.
 
-Reply in the conversation language.
+Reply in the language of the user's messages in this session, every message, including the final report and any `wrap_up` text. Never switch to another language. The launch passes `Conversation language:` to the Reviewer; if the user's message is in Polish, that is Polish.
 
 ## Variant
 
@@ -61,7 +61,7 @@ Parse the user message. Do not mix variants.
 |--------|---------|------|
 | review (default) | `review` | Anything that is not update or close |
 | update from base | `update` | User asks to update, rebase is not used: merge base into the task branch via the script |
-| close after merge | `close` | User says the PR is merged **and** confirms that |
+| close after merge | `close` | The task's PR is already merged. Decide this from the state, not the wording: check the PR with `gh pr view` (or ancestry against the base branch). If the user's message says a PR is done or merged, that is the cue to check; the check decides. If the message is ambiguous (for example "PR is open" or "I will merge it"), ask one question. Otherwise proceed without a second confirmation. |
 
 **Close** without a confirmed merge:
 

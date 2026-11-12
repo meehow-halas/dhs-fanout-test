@@ -98,7 +98,7 @@ Only when the user asks (for example `/dhs-checkit` update). Run `.dhs/scripts/u
 
 ### Close
 
-Only when the user says the PR is merged. Verify the merge (for example `gh pr view` and ancestry against `agents.baseBranch`). Do not guess. If you cannot confirm, stop (`merge not confirmed`). On success, in order:
+Only when the user's message, read as natural language, says the PR for this task is merged. Judge the meaning, not a keyword list. If the message is ambiguous, ask one question. Verify the merge (for example `gh pr view` and ancestry against `agents.baseBranch`). Do not guess. If the verification confirms the merge, proceed without asking again: the user's statement plus the verified merge is the confirmation. If you cannot confirm, stop (`merge not confirmed`). On success, in order:
 1. Set status to the configured `done` string (files) or mapped `done` when not `null`; append a close log row or Jira comment (files tracker: the spec and log files only).
 2. `.dhs/scripts/commit-task <task> --message "<task>: close after merge" -- docs/features/<task>.feature.md docs/feature-log/<task>.log.md` (run from the task worktree). Paths only these two; no code, no `CHANGELOG.md`, no prompt.
 3. `.dhs/scripts/push-task <task>`.

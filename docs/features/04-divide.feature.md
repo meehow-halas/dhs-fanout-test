@@ -1,7 +1,7 @@
 ---
 id: 04-divide
 title: divide(x, y)
-status: in review
+status: done
 type: feature
 depends: []
 relates: []
