@@ -1,7 +1,7 @@
 ---
 id: 03-multiply
 title: multiply(x, y)
-status: todo
+status: done
 type: feature
 depends: []
 relates: []
