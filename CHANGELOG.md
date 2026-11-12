@@ -7,3 +7,4 @@
 - 09-clamp (2026-11-12): add `clamp(x, min, max)` helper in `src/clamp.js` with TypeError for non-numbers, RangeError for min > max, and tests.
 - 08-max-of (2026-11-12): add `max_of(values)` helper in `src/max-of.js` with TypeError/RangeError checks, `Math.max` semantics for NaN, and tests.
 - 10-reverse-text (2026-11-12): add `reverse_text(s)` helper in `src/reverse-text.js` built on `concat_text`, reversing by code points, with TypeError for non-strings and tests.
+- 02-subtract (2026-11-12): add `subtract(x, y)` helper in `src/subtract.js` with TypeError for non-numbers and tests.
