@@ -1,7 +1,7 @@
 ---
 id: 05-concat-text
 title: concat_text(x, y)
-status: todo
+status: done
 type: feature
 depends: []
 relates: []
