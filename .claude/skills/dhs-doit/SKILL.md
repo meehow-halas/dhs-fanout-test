@@ -74,10 +74,10 @@ If spec or prompt is missing:
 BLOCKED: spec and prompt are missing — run /dhs-planit or /dhs-shipit
 ```
 
-Read status from the active tracker. Compare to `agents.statuses` (files) or mapped `agents.tracker.statuses` (Jira). If status is already the configured `in review` or `done` string:
+Read status from the active tracker. Compare to `agents.statuses` (files) or mapped `agents.tracker.statuses` (Jira). If status is already the configured `implemented`, `in review`, or `done` string:
 
 ```text
-BLOCKED: task is already in review or done — use /dhs-checkit for update or close; do not re-implement
+BLOCKED: task is already implemented, in review, or done — use /dhs-checkit for review or update; do not re-implement
 ```
 
 A basename/key in `depends` that is not at the configured `done` status is a stop **for that task** (Implementer also enforces this). Do not work around it. Continue the other named tasks.
@@ -88,7 +88,7 @@ Follow the live Implementer file for this host (`<agentsDir>/implementer.md` fro
 
 For each task that passed resolve:
 
-1. Run `.dhs/scripts/start-task <task>` from the launch checkout. Copy its `worktree:` path. Do not compose `git`. Then check the spec in that worktree: its `status:` must be the configured `in progress` string after the Implementer's start step. If the spec is still `todo` when the Implementer reports done, stop that task with `BLOCKED: status not in progress — the start step did not run for <task>`.
+1. Run `.dhs/scripts/start-task <task>` from the launch checkout. Copy its `worktree:` path. Do not compose `git`. Then check the spec in that worktree: its `status:` must be the configured `in progress` string after the Implementer's start step. When the Implementer reports done, its `status:` must be the configured `implemented` string. Otherwise stop that task: `BLOCKED: status <value> after implementation — the Implementer did not finish the status steps for <task>`.
 2. Apply the Implementer procedure in this session with at least:
    - `Mode: <mode>`
    - Task key (basename or issue key)

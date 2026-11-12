@@ -1,11 +1,11 @@
 ---
 name: dhs-checkit
-description: One Reviewer round per named task (review, update from base, or close after merge). Use when the user runs /dhs-checkit.
+description: One Reviewer round per named task (review or update from base). An accepted review ends with commit, PR and status done. Use when the user runs /dhs-checkit.
 ---
 
 # /dhs-checkit
 
-One Reviewer round per named task. Parse intent: **review** (default), **update** from base, or **close** after the user confirms merge. One variant for the whole invocation. Do not chain stages. Do not launch Architect. Do not merge the GitHub PR.
+One Reviewer round per named task. Parse intent: **review** (default) or **update** from base. One variant for the whole invocation. Do not chain stages. Do not launch Architect. Do not merge the GitHub PR. An accepted review is the end of the feature: the Reviewer commits, opens the PR and sets `done`.
 
 Prefer reporting ❌ and offering `/dhs-doit`. Do not chain into Implementer unless this invocation is a review ❌ handoff the user **asked to fix here**. `/dhs-shipit` owns the fix-round loop.
 
@@ -59,21 +59,14 @@ Parse the user message. Do not mix variants.
 
 | Intent | Variant | When |
 |--------|---------|------|
-| review (default) | `review` | Anything that is not update or close |
+| review (default) | `review` | Anything that is not update |
 | update from base | `update` | User asks to update, rebase is not used: merge base into the task branch via the script |
-| close after merge | `close` | The task's PR is already merged. Decide this from the state, not the wording: check the PR with `gh pr view` (or ancestry against the base branch). If the user's message says a PR is done or merged, that is the cue to check; the check decides. If the message is ambiguous (for example "PR is open" or "I will merge it"), ask one question. Otherwise proceed without a second confirmation. |
 
-**Close** without a confirmed merge:
-
-```text
-BLOCKED: merge not confirmed — confirm the GitHub PR is merged, then /dhs-checkit close
-```
-
-**Update** and **close** rules live in the Reviewer file (`update-from-base`, verify merge, `done`, `return-to-base`). This skill names the variant; it does not compose `git` or `gh`.
+**Update** rules live in the Reviewer file (`update-from-base`). This skill names the variant; it does not compose `git` or `gh`.
 
 ## Several keys
 
-If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `checkit` and the same variant for every child, one child session per key. The parent runs `.dhs/scripts/start-task` per key before spawning; do not launch Reviewer here. `close` is serial (`fanout-plan` returns `mode: serial`). Two or more keys and `sessionSpawn` is `manual`: print the commands per key and stop. One key: continue below.
+If the prompt has the line `Fan-out child: yes`, this session is a child: run the one key here and skip this section. Otherwise, two or more keys named, and `sessionSpawn` in `.dhs/references/hosts.json` for this host is `start_session`: follow `.dhs/references/session-fanout.md` with skill `checkit` and the same variant for every child, one child session per key. The parent runs `.dhs/scripts/start-task` per key before spawning; do not launch Reviewer here. Two or more keys and `sessionSpawn` is `manual`: print the commands per key and stop. One key: continue below.
 
 ## Resolve the tasks
 
@@ -91,7 +84,7 @@ BLOCKED: spec and prompt are missing — run /dhs-planit or /dhs-shipit
 
 ## Status gate (before Reviewer)
 
-Read `status:` in the task's spec (worktree copy when a worktree exists, else the tracker). For `review`, the status must be the configured `in progress` or `code review` string. For `update`, it must be `in progress`, `code review`, or `in review` (the PR may already be open). For `close`, it must be `in review`. Any other value stops that task: `BLOCKED: status <value> does not allow <variant> — set the status the Implementer should have left, or run /dhs-doit <task>`. Do not launch Reviewer on a task that fails this gate.
+Read `status:` in the task's spec (worktree copy when a worktree exists, else the tracker). For `review`, the status must be the configured `implemented` or `in review` string. For `update`, it must be `in progress`, `implemented`, `in review`, or `done` (the PR may already be open). Any other value stops that task: `BLOCKED: status <value> does not allow <variant> — set the status the Implementer should have left, or run /dhs-doit <task>`. Do not launch Reviewer on a task that fails this gate.
 
 ## Launch Reviewer
 
@@ -102,7 +95,7 @@ For each resolved task:
 1. Run `.dhs/scripts/start-task <task>` from the launch checkout if a worktree is not already printed for it. Copy `worktree:`. Do not compose `git`.
 2. Launch Reviewer with at least:
    - `Mode: <mode>`
-   - `Variant: review` or `Variant: update` or `Variant: close` (same variant for every task)
+   - `Variant: review` or `Variant: update` (same variant for every task)
    - Task key
    - `Worktree: <abs>`
    - The user request
@@ -119,6 +112,5 @@ Do not merge. After a clean accepted review, the Reviewer may open a PR; this sk
 Report the variant, each task key, ✅/⚠️/❌, status, `worktree:`, and any script `OK` / `UNCHANGED` / `BLOCKED:` lines.
 
 - Open ❌ → offer `/dhs-doit` (those items only, same list) or `/dhs-shipit` for a single task. Do not start them unless the user already asked to fix in this invocation.
-- Clean review waiting for merge → the user merges on GitHub; close is a later `/dhs-checkit` after they confirm.
+- Clean review accepted → the Reviewer committed, opened the PR and set `done`. Report the PR URL. Nothing left for this skill; the user merges on GitHub, and that does not reopen the task.
 - Update finished → report; do not review unless they also asked for review (they did not: this invocation was update only).
-- Close finished → report `done`.

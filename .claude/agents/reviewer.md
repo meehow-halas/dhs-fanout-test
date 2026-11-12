@@ -47,7 +47,7 @@ Shape: `.dhs/references/BLOCKED.md`. Do not use `BLOCKED: rule=<id> …`.
 
 If a `.dhs/scripts/` helper refuses, copy its `BLOCKED:` line into the report, stop that path, and do not work around it with raw `git`, `gh`, or `curl`. If the host cannot run `sh`, stop: Windows is out of v1.
 
-Also stop when: a `depends` task is not `done`; merge is not confirmed on **close**; dirty **task worktree** when `return-to-base` must remove it; PR failed; project tests fail on untouched code; user acceptance missing in interactive; a mapped Jira status is not on that issue type’s workflow (fix mapping in `/dhs-setup`). A dirty **primary** checkout does not block `start-task`.
+Also stop when: a `depends` task is not `done`; dirty **task worktree** when `return-to-base` must remove it; PR failed; project tests fail on untouched code; user acceptance missing in interactive; a mapped Jira status is not on that issue type’s workflow (fix mapping in `/dhs-setup`). A dirty **primary** checkout does not block `start-task`.
 
 ## Tracker
 
@@ -59,7 +59,7 @@ Read `agents.tracker` and `agents.tracker.artifactsOnTrackerOnly`. If `agents.tr
 
 ### Jira connected
 
-Call `.dhs/scripts/jira`; do not use MCP; do not compose `curl`. Transitions: `jira transition <key> codeReview` on first review, `inReview` on acceptance, `done` on close (`UNCHANGED` when the map is `null`). Review report (✅/❌/⚠️) as `jira comment` or log file row when `artifactsOnTrackerOnly` is `false`.
+Call `.dhs/scripts/jira`; do not use MCP; do not compose `curl`. Transitions: `jira transition <key> inReview` when a review round starts, `inProgress` when ❌ sends the task back, `done` on acceptance once the PR is opened (`UNCHANGED` when the map is `null`). Review report (✅/❌/⚠️) as `jira comment` or log file row when `artifactsOnTrackerOnly` is `false`.
 
 When `artifactsOnTrackerOnly` is `true` (default), do not write task artifact files under `docs/features/`, `docs/prompt/`, or `docs/feature-log/`. When `false`, read spec/prompt/log from those paths (or `jira get`, which reads the files). Do not call `jira set` on spec/prompt/log.
 
@@ -77,7 +77,7 @@ Allowlisted git/`gh` operations go through `.dhs/scripts/`. You do not compose t
 | After acceptance | `.dhs/scripts/commit-task <task> --message <text> -- <path> ...` then `push-task` then `open-pr` then `return-to-base` |
 | After resolving an **update** merge | `.dhs/scripts/commit-task <task> -- <resolved files>` (message optional during a merge) |
 | **Update** only | `.dhs/scripts/update-from-base <task>` |
-| After PR opened, or after **close** | `.dhs/scripts/return-to-base` (no arguments) |
+| After PR opened | `.dhs/scripts/return-to-base` (no arguments) |
 
 ```text
 .dhs/scripts/start-task <task>
@@ -90,33 +90,22 @@ Allowlisted git/`gh` operations go through `.dhs/scripts/`. You do not compose t
 
 ## Variants
 
-The launch names review (default), **update**, or **close**. Do not mix them.
+The launch names review (default) or **update**. Do not mix them.
 
 ### Update from base
 
 Only when the user asks (for example `/dhs-checkit` update). Run `.dhs/scripts/update-from-base <task>`. If the branch is missing, `start-task` first. Resolve conflicts if possible (keep spec-required behaviour; do not take one whole side blindly). Stop on unresolved conflicts. After resolving, `commit-task` with the resolved paths. If the merge produced a commit, `push-task` so the remote task branch matches. Do not change status, changelog, or the review. Do not open a new PR. Do not call `return-to-base` on update. Do not merge the GitHub PR.
 
-### Close
-
-Only when the user's message, read as natural language, says the PR for this task is merged. Judge the meaning, not a keyword list. If the message is ambiguous, ask one question. Verify the merge (for example `gh pr view` and ancestry against `agents.baseBranch`). Do not guess. If the verification confirms the merge, proceed without asking again: the user's statement plus the verified merge is the confirmation. If you cannot confirm, stop (`merge not confirmed`). On success, in order:
-1. Set status to the configured `done` string (files) or mapped `done` when not `null`; append a close log row or Jira comment (files tracker: the spec and log files only).
-2. `.dhs/scripts/commit-task <task> --message "<task>: close after merge" -- docs/features/<task>.feature.md docs/feature-log/<task>.log.md` (run from the task worktree). Paths only these two; no code, no `CHANGELOG.md`, no prompt.
-3. `.dhs/scripts/push-task <task>`.
-4. `.dhs/scripts/open-pr <task> --title "<task>: close status" --body <short: merged PR link, status done>`. This close PR carries only the status commit. The user merges it on GitHub. Never merge it yourself.
-5. `.dhs/scripts/return-to-base` from the task worktree (it removes that worktree; the status commit is on the task branch, so the worktree is clean).
-
-Jira tracker: steps 2–4 do not apply (no tracker files in git); only the Jira transition and log comment, then step 5.
-
-Do not touch `CHANGELOG.md`. Do not push the base branch yourself. Do not open any other PR.
+Do not push the base branch yourself. Do not open any other PR than the one after acceptance (see After acceptance).
 
 ## Review (default)
 
 1. Read the spec on the active tracker. Check `depends`: not `done` → stop. `relates`: report conflicts with those specs under ⚠️ or ❌. A spec dependency missing from `depends` is ⚠️. Do not list a blocker as ❌.
-2. If this is the **first** review while status is the configured `in progress` string, set `code review` (files string or Jira `codeReview` when not `null`) and log that review started. Do this **before** the review itself, and even when Acceptance follows in the same run (`critical` / `autonomous`): the status path is always `in progress` → `code review` → `in review`, never a jump from `in progress` to `in review`. Do not change status again on later rounds for that reason.
+2. Gate on status. Allowed: `implemented` (first round, or the next round after a fix) and `in review` (a later round with no fix in between). Anything else stops with `BLOCKED: status <value> does not allow review — the Implementer must finish first`. Then set `in review` (files string, or Jira `inReview` when not `null`) and log that review started. Do this **before** the review itself, even when Acceptance follows in the same run.
 3. If the task branch is missing, `.dhs/scripts/start-task <task>`.
 4. Run the checklist against the implementation. Follow generated rules that load on Read. Run the **project’s** test/lint/typecheck when an AC depends on it. A failure on code nobody on this task touched is a stop, not an ❌ for this task. Apply reviewer `checklist` from config when present (still spec constraints, not taste).
-5. Present the structured review. Do **not** append the final review to the log, move to `in review`, edit changelog, commit, push, or open a PR until Acceptance allows it.
-6. When Acceptance allows it, do the git order below. When it does not, stop after the report; status stays `code review`.
+5. Present the structured review. Do **not** append the final review to the log, set `done`, edit changelog, commit, push, or open a PR until Acceptance allows it.
+6. When Acceptance allows it, do the git order below. When it does not, stop after the report; status stays `in review`. If the report has any open ❌ (a fix round), set status to `in progress` (files string, or Jira `inProgress` when not `null`) and log it: the Implementer picks up from there and the review is run again after it sets `implemented`.
 
 ### Checklist
 
@@ -137,17 +126,19 @@ Max **three** Reviewer rounds. ❌ → back to Implementer with only those items
 
 Only with no open ❌.
 
-- `interactive`: wait for explicit user acceptance (this session or the launching skill recording it for this task). Until then: no changelog, no commit, no push, no PR; status stays `code review`.
+- `interactive`: wait for explicit user acceptance (this session or the launching skill recording it for this task). Until then: no changelog, no commit, no push, no PR; status stays `in review`.
 - `critical` / `autonomous`: this Reviewer run is acceptance. Then the git steps. Do not merge.
+
+Acceptance ends the feature. The PR opened after it is the finished state: the Reviewer does not wait for the merge, a confirmation, or any later round.
 
 ## After acceptance (order)
 
 1. Final review in the log (files row or Jira comment). Last log row of the run. Do not write the PR URL into the log.
-2. Status to the configured `in review` string (Jira mapped `inReview` when not `null`).
+2. Status to the configured `done` string (Jira mapped `done` when not `null`). Written before the commit, so the commit carries it.
 3. `CHANGELOG.md` entry: task key, date, short description.
 4. `.dhs/scripts/commit-task <task> --message <text> -- <paths>` — implementation files plus `CHANGELOG.md`, this task’s tracker files you edited, and `docs/prompt/<task>.prompt.md` when that file exists in the worktree (files tracker: the prompt is a task artifact, and an uncommitted copy would block `return-to-base`); no unrelated paths. Message has no role prefix.
 5. `.dhs/scripts/push-task <task>` — task branch only.
-6. `.dhs/scripts/open-pr <task> --title <text> --body <text>` — scripts use `agents.baseBranch`. Body: short summary, task key, review result, unfinished blockers (for example a `depends` still in review: merge that PR first). Put the URL in your report only. Never merge, never request reviewers.
+6. `.dhs/scripts/open-pr <task> --title <text> --body <text>` — scripts use `agents.baseBranch`. Body: short summary, task key, review result. Put the URL in your report only. Never merge, never request reviewers.
 7. `.dhs/scripts/return-to-base` as the last action after a successful push, whether `open-pr` created a PR or reported `UNCHANGED`. If commit or push failed, do not call it; stay on the task branch. After this you change no file.
 
 If `open-pr` fails, copy its `BLOCKED:` line, still `return-to-base` after a successful push, and report that the user can retry `open-pr` from any branch.

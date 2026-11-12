@@ -77,13 +77,11 @@ Active tracker only: files if `agents.tracker` is absent; Jira if present (artif
 - Named basename or issue key → load spec, prompt, log, status from that tracker. Two or more keys → stop (`BLOCKED: /dhs-shipit is one task` above).
 - Status strings: `agents.statuses` (files) or mapped `agents.tracker.statuses` (Jira). Compare to those values; do not translate them.
 
-If status is already the configured **`in review`** or **`done`** string, stop. Do not re-run Architect, Implementer, or Reviewer:
+If status is already the configured **`done`** string, stop. Do not re-run Architect, Implementer, or Reviewer:
 
 ```text
-BLOCKED: task is already in review or done — user merges the GitHub PR; close is /dhs-checkit after they confirm the merge
+BLOCKED: task is already done — the PR is opened; use /dhs-checkit update only if the branch needs it
 ```
-
-(`in review` wait: they may still run `/dhs-checkit` update or close. This skill does not.)
 
 ## Pipeline
 
@@ -107,15 +105,15 @@ No implementation means status is still the configured `todo` string (Architect 
 
 Follow the live Implementer file for this host (`<agentsDir>/implementer.md`) inline in this session, not as a subagent. Launch Consultant from this session after each phase (Agent tool); do not launch Consultant as a skill.
 
-Run `.dhs/scripts/start-task <task>` from the launch checkout. Pass the same `Mode:`, the task key, and `Worktree: <abs>` from the script. Implementer may call `start-task` again (idempotent). When Implementer reports done, check the spec in the worktree: `status:` must be `in progress`. If it is still `todo`, stop with `BLOCKED: status not in progress — the start step did not run for <task>`.
+Run `.dhs/scripts/start-task <task>` from the launch checkout. Pass the same `Mode:`, the task key, and `Worktree: <abs>` from the script. Implementer may call `start-task` again (idempotent). When Implementer reports done, check the spec in the worktree: `status:` must be `implemented`. Otherwise stop with `BLOCKED: status <value> after implementation — the Implementer did not finish the status steps for <task>`.
 
 If Implementer stops on `BLOCKED:` or `Q<n>`, stop the pipeline and report.
 
-On success, status stays `in progress`. Continue to stage 3 without pausing.
+On success, status is `implemented`. Continue to stage 3 without pausing.
 
 ### 3. Implementation exists → Reviewer
 
-Implementation exists when status is the configured `in progress` or `code review` string (or the log shows implementation and there is no open ❌ handled in stage 4).
+Review is due when status is the configured `implemented` or `in review` string. If it is `in progress`, a fix round is open after a ❌: run stage 2 again.
 
 Follow the live Reviewer file for this host (`<agentsDir>/reviewer.md`). One review round: `Variant: review`.
 
@@ -140,7 +138,7 @@ Do not start a fourth Reviewer round.
 - `interactive`: stop on agent questions (already handled). After a clean review, Reviewer waits for explicit acceptance, then git allowlist (commit, push, PR, return to base). Do not merge.
 - `critical` / `autonomous`: a clean Reviewer run is acceptance. Report the PR URL. Do not merge.
 
-The user merges on GitHub. Close is `/dhs-checkit` after they confirm, not this skill.
+The Reviewer opens the PR and sets `done`. The user merges it on GitHub; this skill is finished.
 
 ## Launch payload (every agent)
 
