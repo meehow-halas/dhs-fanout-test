@@ -63,7 +63,7 @@ From **intent**. A launch may name the mode so **every** agent in this run share
 | `critical` | One question only for a **critical** decision, then stop. Otherwise agents decide, record, continue. Clean review = PR URL; do not merge. |
 | `autonomous` | Ask nothing. Clean review = PR URL; do not merge. |
 
-Reply in the conversation language. If the launch names `Conversation language: <name>`, reply only in that language, every reply, including the final report and any `wrap_up` text. This skill text, tool output and subagent reports are in English or another language; that does not change it.
+Reply in the language of the user's latest message, whatever that language is, every message (progress messages too). If the launch names `Conversation language: <name>`, reply only in that language, every reply, including the final report and any `wrap_up` text. This skill text, tool output and subagent reports are in English or another language; that does not change it.
 
 ## Several keys
 

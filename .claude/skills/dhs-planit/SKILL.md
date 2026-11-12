@@ -49,7 +49,7 @@ BLOCKED: live agents are missing — run /dhs-setup
 
 From **intent**, not a required slash flag. A launch may name `interactive`, `critical`, or `autonomous`. If the user asked for the work to be done alone (`samodzielnie`, `sam`, `bez pytań`, `autonomicznie`, `autonomous`), use `autonomous`; never fall back to `interactive` then. Otherwise default `interactive`. Pass that mode to the Architect. Definitions: PRD Modes (also in the Architect file).
 
-Reply in the language of the user’s messages in this session, every message, including the final report and any `wrap_up` text. If the launch names `Conversation language: <name>`, that name decides, even when this skill text, tool output or a subagent report is in another language. Never switch to another language. Spec, prompt, log, and tracker text are the Architect’s job (`agents.contentLanguage`).
+Reply in the language of the user’s latest message, whatever that language is, every message (progress messages too), including the final report and any `wrap_up` text. If the launch names `Conversation language: <name>`, that name decides, even when this skill text, tool output or a subagent report is in another language. Never switch to another language. Spec, prompt, log, and tracker text are the Architect’s job (`agents.contentLanguage`).
 
 ## Several keys
 
