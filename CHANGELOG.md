@@ -1,5 +1,6 @@
 # Changelog
 
+- 011-feature-negate (2026-11-12): add `negate(x)` helper in `src/negate.js` returning `-x` with TypeError for non-numbers, and tests.
 - 04-divide (2026-11-12): add `divide(x, y)` helper in `src/divide.js` with TypeError/RangeError checks and `npm test` via `node --test`.
 - 05-concat-text (2026-11-12): add `concat_text(x, y)` helper in `src/concat-text.js` with TypeError for non-strings and tests.
 - 07-sqr (2026-11-12): add `sqr(x, y)` helper in `src/sqr.js` returning `Math.sqrt(x*x + y*y)` with TypeError for non-numbers and tests.
