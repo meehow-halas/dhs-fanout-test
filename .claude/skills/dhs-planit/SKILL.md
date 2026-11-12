@@ -67,7 +67,7 @@ Pass at least:
 
 - `Mode: <mode>`
 - The user request (and task key if they named one)
-- For an existing spec: say in the launch that the Architect owns the existing-spec rules (overwrite in `autonomous`, proposal in `interactive`, see the Architect file). Do not summarize or rewrite the spec in the parent.
+- For an existing spec: say in the launch that the Architect owns the existing-spec rules (overwrite in `autonomous`, proposal in `interactive`, see the Architect file). Do not summarize or rewrite the spec in the parent. When the user has approved a proposed change in this session, pass `User approval: <the user's own words, verbatim>` in the launch. Never paraphrase or infer approval.
 - `Conversation language: <name>` always: the language of the user's message in this session (a Polish message gives `Polish`). Never omit it.
 
 If the Architect needs a brainstorm round: **stop and ask `/dhs-brainstorm`**. Do not run the round, do not interview personae, do not launch a facilitator. Then stop this skill; do not start `/dhs-doit`.

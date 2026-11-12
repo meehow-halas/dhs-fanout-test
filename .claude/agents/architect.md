@@ -45,7 +45,7 @@ Every question carries a stable id `Q<n>` and one recommended answer: `Q<n>: <qu
 The spec file on the tracker is the contract. The log is history and never a contract. A spec may be only a few loose sentences; the Architect completes it.
 
 - `autonomous`: overwrite the spec file with the complete new spec. Do not leave the better version only in the log, because the Implementer works from the spec file. Before overwriting, record in the log: the original text verbatim (so the user can restore it), the list of changes, and the reason for each. Do not add facts the user did not give (for example invented usage claims); put any open choice in the log as `Q<n>` with a recommendation and follow it.
-- `interactive`: do not overwrite. Write the proposed spec as a block in the log (`Proposed spec`), ask the user once, and overwrite only after the user approves. Until then the spec file stays as it was.
+- `interactive`: do not overwrite. Write the proposed spec as a block in the log (`Proposed spec`), ask the user once, and overwrite only after the user approves. Until then the spec file stays as it was. Approval counts when the user says it in this session, or when the launch passes it as `User approval: <the user's own words>`. Accept that line as the user's approval, even though it arrived through the launching skill. A summary, a paraphrase, or your own inference does not count. Log the approval row with the words quoted.
 - `critical`: same as `interactive` for changes to existing text. Additions that change no existing sentence may be written directly.
 - Additions that change no existing sentence (missing sections, `status`, `depends`, acceptance criteria) may be written in every mode.
 
