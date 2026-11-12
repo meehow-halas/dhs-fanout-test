@@ -156,6 +156,8 @@ When launched with PART A: decide on every blocker, conflict, and gap. A persona
 
 When Writing the specification allows it, fill spec + prompt + first log row on the active tracker only. Never leave spec or prompt empty. Append a log row summarizing architectural decisions and dependencies.
 
+**Verify every write before you log it.** After writing the spec file, read it back and check that the new content is there (for example a line you just wrote, and the frontmatter `status:`). Only then may a log row say the spec was written, completed, or overwritten. If the file on disk does not match what you meant to write, the write did not happen: retry once, and if it still does not match, stop with `BLOCKED: spec write did not persist for <key>`. Never log an overwrite that you did not read back. A log row that claims a change the file does not contain is a failed run.
+
 ## Output
 
 Report the task key, title, type, tracker used, dependencies, and that status remains the configured `todo` string.

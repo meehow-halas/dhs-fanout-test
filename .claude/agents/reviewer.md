@@ -112,7 +112,7 @@ Do not touch `CHANGELOG.md`. Do not push the base branch yourself. Do not open a
 ## Review (default)
 
 1. Read the spec on the active tracker. Check `depends`: not `done` → stop. `relates`: report conflicts with those specs under ⚠️ or ❌. A spec dependency missing from `depends` is ⚠️. Do not list a blocker as ❌.
-2. If this is the **first** review while status is the configured `in progress` string, set `code review` (files string or Jira `codeReview` when not `null`) and log that review started. Do not change status again on later rounds for that reason.
+2. If this is the **first** review while status is the configured `in progress` string, set `code review` (files string or Jira `codeReview` when not `null`) and log that review started. Do this **before** the review itself, and even when Acceptance follows in the same run (`critical` / `autonomous`): the status path is always `in progress` → `code review` → `in review`, never a jump from `in progress` to `in review`. Do not change status again on later rounds for that reason.
 3. If the task branch is missing, `.dhs/scripts/start-task <task>`.
 4. Run the checklist against the implementation. Follow generated rules that load on Read. Run the **project’s** test/lint/typecheck when an AC depends on it. A failure on code nobody on this task touched is a stop, not an ❌ for this task. Apply reviewer `checklist` from config when present (still spec constraints, not taste).
 5. Present the structured review. Do **not** append the final review to the log, move to `in review`, edit changelog, commit, push, or open a PR until Acceptance allows it.
