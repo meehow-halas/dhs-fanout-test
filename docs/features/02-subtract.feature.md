@@ -1,7 +1,7 @@
 ---
 id: 02-subtract
 title: subtract(x, y)
-status: done
+status: todo
 type: feature
 depends: []
 relates: []
