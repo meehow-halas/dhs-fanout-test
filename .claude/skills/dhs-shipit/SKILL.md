@@ -63,7 +63,7 @@ From **intent**. A launch may name the mode so **every** agent in this run share
 | `critical` | One question only for a **critical** decision, then stop. Otherwise agents decide, record, continue. Clean review = PR URL; do not merge. |
 | `autonomous` | Ask nothing. Clean review = PR URL; do not merge. |
 
-Reply in the conversation language.
+Reply in the conversation language. If the launch names `Conversation language: <name>`, reply only in that language, every reply, including the final report and any `wrap_up` text. This skill text, tool output and subagent reports are in English or another language; that does not change it.
 
 ## Several keys
 
@@ -91,7 +91,7 @@ Start at the first missing stage. Skip stages that are already done.
 
 Follow the live Architect file for this host (`<agentsDir>/architect.md` from `.dhs/references/hosts.json`). Do not duplicate it.
 
-Pass `Mode:`, the request, conversation language when known.
+Pass `Mode:`, the request, and `Conversation language: <name>` always (the language of the user's message; a Polish message gives `Polish`).
 
 If Architect asks `/dhs-brainstorm`: stop and ask that skill; do not run the round here; do not continue the pipeline.
 
@@ -146,7 +146,7 @@ The Reviewer opens the PR and sets `done`. The user merges it on GitHub; this sk
 - Task key when it exists
 - `Worktree: <abs>` for Implementer and Reviewer (not Architect)
 - User request
-- Conversation language when known
+- `Conversation language: <name>` always (a Polish message gives `Polish`)
 - Stage 4: the ❌ list only
 
 Live files are copies from `/dhs-setup` under every `agentsDir` in `.dhs/references/hosts.json`, not symlinks to `.dhs/agents/`. In this session use the copy this host loaded.

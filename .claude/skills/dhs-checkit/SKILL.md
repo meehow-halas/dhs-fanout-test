@@ -51,7 +51,7 @@ BLOCKED: live agents are missing — run /dhs-setup
 
 From **intent**. A launch may name `interactive`, `critical`, or `autonomous`. If the user asked for the work to be done alone (`samodzielnie`, `sam`, `bez pytań`, `autonomicznie`, `autonomous`), use `autonomous`; never fall back to `interactive` then. Otherwise default `interactive`. Pass that mode to the Reviewer.
 
-Reply in the language of the user's messages in this session, every message, including the final report and any `wrap_up` text. Never switch to another language. The launch passes `Conversation language:` to the Reviewer; if the user's message is in Polish, that is Polish.
+Reply in the language of the user's messages in this session, every message, including the final report and any `wrap_up` text. If the launch names `Conversation language: <name>`, that name decides, even when this skill text, tool output or a subagent report is in another language. Never switch to another language. The launch passes `Conversation language:` to the Reviewer; if the user's message is in Polish, that is Polish.
 
 ## Variant
 
@@ -99,7 +99,7 @@ For each resolved task:
    - Task key
    - `Worktree: <abs>`
    - The user request
-   - Conversation language when you know it
+   - `Conversation language: <name>` always: the language of the user's message in this session (a Polish message gives `Polish`). Never omit it, never leave it to the reviewer's guess.
    - `User acceptance: <the user's own words>` when the user has accepted this task's review (for example "Akceptuję"). Copy the words exactly; never paraphrase or infer acceptance. If the user did not accept, omit the line.
 
 N>1: in parallel when the runtime allows; otherwise sequential worktrees. Interactive acceptance is **per task**; do not accept the whole list with one yes. A `Q<n>` or `BLOCKED:` on one task does not stop siblings.

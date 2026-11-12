@@ -49,7 +49,7 @@ BLOCKED: live agents are missing — run /dhs-setup
 
 From **intent**. A launch may name `interactive`, `critical`, or `autonomous`. If the user asked for the work to be done alone (`samodzielnie`, `sam`, `bez pytań`, `autonomicznie`, `autonomous`), use `autonomous`; never fall back to `interactive` then. Otherwise default `interactive`. Pass that mode to the Implementer.
 
-Reply in the conversation language.
+Reply in the conversation language. If the launch names `Conversation language: <name>`, reply only in that language, every reply, including the final report and any `wrap_up` text. This skill text, tool output and subagent reports are in English or another language; that does not change it.
 
 ## Several keys
 
@@ -94,7 +94,7 @@ For each task that passed resolve:
    - Task key (basename or issue key)
    - `Worktree: <abs>`
    - The user request
-   - Conversation language when you know it
+   - `Conversation language: <name>` always: the language of the user's message in this session (a Polish message gives `Polish`). Never omit it.
    - If this is a Reviewer ❌ handoff the user asked to fix **in this invocation**: the ❌ items only (Consultant again only on phases those fixes belong to)
 
 N>1 in this session (no fan-out): run the tasks one after another, one worktree per task. Parallel runs come only from session fan-out (`.dhs/references/session-fanout.md`), where each key gets its own session.
