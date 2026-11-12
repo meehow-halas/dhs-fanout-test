@@ -126,7 +126,7 @@ Max **three** Reviewer rounds. ❌ → back to Implementer with only those items
 
 Only with no open ❌.
 
-- `interactive`: wait for explicit user acceptance (this session or the launching skill recording it for this task). Until then: no changelog, no commit, no push, no PR; status stays `in review`.
+- `interactive`: wait for explicit user acceptance. It counts when the user says it in this session, or when the launch passes it as `User acceptance: <the user's own words>`. Accept that line as the user's acceptance for this task, even though it arrived through the launching skill. A summary, a paraphrase, or your own inference does not count. Until then: no changelog, no commit, no push, no PR; status stays `in review`.
 - `critical` / `autonomous`: this Reviewer run is acceptance. Then the git steps. Do not merge.
 
 Acceptance ends the feature. The PR opened after it is the finished state: the Reviewer does not wait for the merge, a confirmation, or any later round.

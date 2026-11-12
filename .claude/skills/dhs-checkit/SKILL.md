@@ -100,6 +100,7 @@ For each resolved task:
    - `Worktree: <abs>`
    - The user request
    - Conversation language when you know it
+   - `User acceptance: <the user's own words>` when the user has accepted this task's review (for example "Akceptuję"). Copy the words exactly; never paraphrase or infer acceptance. If the user did not accept, omit the line.
 
 N>1: in parallel when the runtime allows; otherwise sequential worktrees. Interactive acceptance is **per task**; do not accept the whole list with one yes. A `Q<n>` or `BLOCKED:` on one task does not stop siblings.
 
